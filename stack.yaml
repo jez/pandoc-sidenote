@@ -1,0 +1,10 @@
+flags: {}
+extra-package-dbs: []
+packages:
+- '.'
+extra-deps:
+- doctemplates-0.1.0.2
+- monad-gen-0.3.0.1
+- pandoc-1.18
+- pandoc-types-1.17
+resolver: lts-7.7

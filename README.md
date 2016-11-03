@@ -2,8 +2,13 @@
 
 > Convert Pandoc Markdown-style footnotes into sidenotes
 
-This is a simple Pandoc filter to convert footnotes into a format that can be
-consumed by [Tufte CSS].
+This is a simple [Pandoc filter] to convert footnotes into a format that can be
+consumed by [Tufte CSS]. On the whole, this project weighs in at well under 100
+lines of code. Check out [Main.hs](src/Main.hs) if you're curious how it works.
+
+It's used by calling `pandoc --filter pandoc-sidenote`. To see it in action, see
+[Tufte Pandoc CSS], a project which uses it. In particular, take a look at the
+Makefile included in that project.
 
 ## Installation
 
@@ -30,13 +35,6 @@ stack build
 # copy the compiled binary onto your PATH
 stack install
 ```
-
-## Usage
-
-This is a [Pandoc filter]. It's used by calling `pandoc --filter pandoc-sidenote`.
-
-To see it in action, see [Tufte Pandoc CSS], a project which uses it. In
-particular, take a look at the Makefile included in that project.
 
 ## License
 
