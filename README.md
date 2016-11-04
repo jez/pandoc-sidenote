@@ -12,12 +12,11 @@ Makefile included in that project.
 
 ## Installation
 
-If you're on OS X, you can install the `pandoc-sidenote` binary from the
-Releases tab above. Just download it and put it anywhere on your PATH. I like
-using `~/bin`. I have this line in my `bashrc`:
+If you're on OS X, you can install the `pandoc-sidenote` binary from my Homebrew
+tap:
 
-```bash
-export PATH="$PATH:~/bin"
+```
+brew install jez/formulae/pandoc-sidenote
 ```
 
 Otherwise, you'll have to install from source. This project is written in
