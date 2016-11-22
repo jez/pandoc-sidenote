@@ -10,6 +10,12 @@ It's used by calling `pandoc --filter pandoc-sidenote`. To see it in action, see
 [Tufte Pandoc CSS], a project which uses it. In particular, take a look at the
 Makefile included in that project.
 
+## Dependencies
+
+`pandoc-sidenote` is built against Pandoc version 1.18. You'll need to upgrade
+to this version. If a newer version has been released, the Stack build manifest
+will need to be adjusted for that version, and the project then rebuilt.
+
 ## Installation
 
 If you're on OS X, you can install the `pandoc-sidenote` binary from my Homebrew
