@@ -1,6 +1,6 @@
 {-# LANGUAGE FlexibleContexts #-}
 
-module Main where
+module Text.Pandoc.SideNote (usingSideNotes) where
 
 import Data.List (intercalate)
 
@@ -66,6 +66,3 @@ filterInline inline = return inline
 
 usingSideNotes :: Pandoc -> Pandoc
 usingSideNotes (Pandoc meta blocks) = Pandoc meta (runGen (walkM filterInline blocks))
-
-main :: IO ()
-main = toJSONFilter usingSideNotes

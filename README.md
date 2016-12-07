@@ -10,6 +10,9 @@ It's used by calling `pandoc --filter pandoc-sidenote`. To see it in action, see
 [Tufte Pandoc CSS], a project which uses it. In particular, take a look at the
 Makefile included in that project.
 
+The core functionality is also exposed as a library, which can be called by Haskell
+applications such as Hakyll.
+
 ## Dependencies
 
 `pandoc-sidenote` is built against Pandoc version 1.18. You'll need to upgrade
