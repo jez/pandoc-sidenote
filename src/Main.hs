@@ -3,11 +3,10 @@
 module Main where
 
 import Data.List (intercalate)
-import Data.Maybe (listToMaybe)
 
 import Control.Monad.Gen
 
-import Text.Pandoc.Walk (Walkable, walk, walkM)
+import Text.Pandoc.Walk (walk, walkM)
 import Text.Pandoc.JSON
 
 getFirstStr :: [Inline] -> Maybe String
@@ -67,7 +66,6 @@ filterInline inline = return inline
 
 usingSideNotes :: Pandoc -> Pandoc
 usingSideNotes (Pandoc meta blocks) = Pandoc meta (runGen (walkM filterInline blocks))
-
 
 main :: IO ()
 main = toJSONFilter usingSideNotes
