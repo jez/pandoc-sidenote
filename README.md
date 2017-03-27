@@ -15,8 +15,15 @@ applications such as Hakyll.
 
 ## Dependencies
 
-`pandoc-sidenote` is built against Pandoc version 1.18. You'll need to upgrade
-to this version. If a newer version has been released, the Stack build manifest
+`pandoc-sidenote` is build against a specific version of Pandoc. This table maps
+`pandoc` versions to `pandoc-sidenote` versions:
+
+| pandoc | pandoc-sidenote |
+| ------ | --------------- |
+| 1.19   | 0.19.0          |
+| 1.18   | 0.9.0           |
+
+If a newer version of `pandoc` has been released, the Stack build manifest
 will need to be adjusted for that version, and the project then rebuilt.
 
 ## Installation

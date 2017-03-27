@@ -1,4 +1,4 @@
-VERSION := 0.9.0
+VERSION := 0.19.0
 
 all: pandoc-sidenote-$(VERSION).zip
 
