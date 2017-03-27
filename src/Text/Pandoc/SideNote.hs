@@ -41,7 +41,7 @@ filterInline (Note blocks) = do
   -- Generate a unique number for the 'for=' attribute
   i <- gen
 
-  -- Note has a [Block], but RawInline needs [Inline]
+  -- Note has a [Block], but Span needs [Inline]
   let content = coerceToInline blocks
 
   -- The '{-}' symbol differentiates between margin note and side note
