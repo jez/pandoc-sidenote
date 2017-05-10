@@ -49,6 +49,7 @@ stack install
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://jez.io/MIT-LICENSE.txt)
 
 [Tufte CSS]: https://edwardtufte.github.io/tufte-css/
+[Stack]: https://docs.haskellstack.org/en/stable/README/
 [install Stack first]: https://docs.haskellstack.org/en/stable/README/
 [Pandoc filter]: http://pandoc.org/scripting.html#json-filters
 [Tufte Pandoc CSS]: https://github.com/jez/tufte-pandoc-css
