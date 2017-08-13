@@ -16,7 +16,7 @@ cabal-version:       >=1.10
 Library
   Exposed-modules:   Text.Pandoc.SideNote
   hs-source-dirs:      src
-  build-depends:       base
+  build-depends:       base < 5
                      , monad-gen
                      , pandoc
                      , pandoc-types
@@ -26,7 +26,7 @@ executable pandoc-sidenote
   hs-source-dirs:      ./
   main-is:             Main.hs
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
-  build-depends:       base
+  build-depends:       base < 5
                      , pandoc-sidenote
                      , pandoc-types
   default-language:    Haskell2010
