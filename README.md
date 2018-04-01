@@ -18,10 +18,10 @@ applications such as Hakyll.
 `pandoc-sidenote` is build against a specific version of Pandoc. This table maps
 `pandoc` versions to `pandoc-sidenote` versions:
 
-| pandoc | pandoc-sidenote |
-| ------ | --------------- |
-| 2.x, 1.19   | 0.19.0          |
-| 1.18   | 0.9.0           |
+| pandoc    | pandoc-sidenote |
+| ------    | --------------- |
+| 2.1, 1.19 | 0.19.0          |
+| 1.18      | 0.9.0           |
 
 If a newer version of `pandoc` has been released, the Stack build manifest
 will need to be adjusted for that version, and the project then rebuilt.
