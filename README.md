@@ -31,6 +31,7 @@ will need to be adjusted for that version, and the project then rebuilt.
 ### Cabal
 
 `pandoc-sidenote` is on Hackage and can thus be installed using `cabal`:
+
 ```bash
 cabal install pandoc-sidenote
 ```
