@@ -2,12 +2,12 @@
 
 module Text.Pandoc.SideNote (usingSideNotes) where
 
-import           Data.List         (intercalate)
+import           Data.List           (intercalate)
 
-import           Control.Monad.Gen
+import           Control.Monad.State
 
 import           Text.Pandoc.JSON
-import           Text.Pandoc.Walk  (walk, walkM)
+import           Text.Pandoc.Walk    (walk, walkM)
 
 getFirstStr :: [Inline] -> Maybe String
 getFirstStr []                 = Nothing
@@ -16,6 +16,13 @@ getFirstStr (_       :inlines) = getFirstStr inlines
 
 newline :: [Inline]
 newline = [LineBreak, LineBreak]
+
+-- This could be implemented more concisely, but I think this is more clear.
+getThenIncr :: State Int Int
+getThenIncr = do
+  i <- get
+  put (i + 1)
+  return i
 
 -- Extract inlines from blocks
 coerceToInline :: [Block] -> [Inline]
@@ -37,10 +44,10 @@ coerceToInline = concatMap deBlock . walk deNote
   deNote (Note _) = Str ""
   deNote x        = x
 
-filterInline :: Inline -> Gen Int Inline
+filterInline :: Inline -> State Int Inline
 filterInline (Note blocks) = do
   -- Generate a unique number for the 'for=' attribute
-  i <- gen
+  i <- getThenIncr
 
   -- Note has a [Block], but Span needs [Inline]
   let content  = coerceToInline blocks
@@ -78,4 +85,4 @@ filterInline inline = return inline
 
 usingSideNotes :: Pandoc -> Pandoc
 usingSideNotes (Pandoc meta blocks) =
-  Pandoc meta (runGen (walkM filterInline blocks))
+  Pandoc meta (evalState (walkM filterInline blocks) 0)

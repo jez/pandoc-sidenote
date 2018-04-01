@@ -2,10 +2,4 @@ flags: {}
 extra-package-dbs: []
 packages:
 - '.'
-extra-deps:
-- doctemplates-0.1.0.2
-- texmath-0.9.1
-- monad-gen-0.3.0.1
-- pandoc-1.19
-- pandoc-types-1.17
-resolver: lts-7.7
+resolver: lts-11.2
