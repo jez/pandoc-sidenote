@@ -1,0 +1,45 @@
+name:                pandoc-sidenote
+version:             0.20.0.0
+github:              jez/pandoc-sidenote
+license:             MIT
+license-file:        LICENSE
+author:              Jake Zimmerman
+maintainer:          zimmerman.jake@gmail.com
+copyright:           2016 Jake Zimmerman
+
+extra-source-files:
+- README.md
+- LICENSE
+
+# Metadata used when publishing your package
+synopsis:            Convert Pandoc Markdown-style footnotes into sidenotes
+description:         Convert Pandoc Markdown-style footnotes into sidenotes
+category:            CommandLine
+
+ghc-options:
+- -Wall
+- -Wcompat
+- -Wmissing-signatures
+- -Werror
+- -funbox-strict-fields
+
+dependencies:
+- base >= 4.7 && < 5
+- mtl
+- pandoc
+- pandoc-types
+
+
+library:
+  source-dirs: src
+
+executables:
+  pandoc-sidenote:
+    main:                Main.hs
+    source-dirs:         ./
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - pandoc-sidenote

@@ -1,36 +1,58 @@
-name:                pandoc-sidenote
-version:             0.19.0.0
-synopsis:            Convert Pandoc Markdown-style footnotes into sidenotes
-description:         Convert Pandoc Markdown-style footnotes into sidenotes
-homepage:            https://github.com/jez/pandoc-sidenote#readme
-license:             MIT
-license-file:        LICENSE
-author:              Jake Zimmerman
-maintainer:          zimmerman.jake@gmail.com
-copyright:           2016 Jake Zimmerman
-category:            CommandLine
-build-type:          Simple
--- extra-source-files:
-cabal-version:       >=1.10
+-- This file has been generated from package.yaml by hpack version 0.20.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: fe713c44d9f1515c01cb722aa43283ab5c839adaae15444a0249fc7ac4402ec3
 
-Library
-  Exposed-modules:   Text.Pandoc.SideNote
-  hs-source-dirs:      src
-  build-depends:       base < 5
-                     , monad-gen
-                     , pandoc
-                     , pandoc-types
-  default-language:    Haskell2010
+name:           pandoc-sidenote
+version:        0.19.0.0
+synopsis:       Convert Pandoc Markdown-style footnotes into sidenotes
+description:    Convert Pandoc Markdown-style footnotes into sidenotes
+category:       CommandLine
+homepage:       https://github.com/jez/pandoc-sidenote#readme
+bug-reports:    https://github.com/jez/pandoc-sidenote/issues
+author:         Jake Zimmerman
+maintainer:     zimmerman.jake@gmail.com
+copyright:      2016 Jake Zimmerman
+license:        MIT
+license-file:   LICENSE
+build-type:     Simple
+cabal-version:  >= 1.10
 
-executable pandoc-sidenote
-  hs-source-dirs:      ./
-  main-is:             Main.hs
-  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
-  build-depends:       base < 5
-                     , pandoc-sidenote
-                     , pandoc-types
-  default-language:    Haskell2010
+extra-source-files:
+    LICENSE
+    README.md
 
 source-repository head
-  type:     git
+  type: git
   location: https://github.com/jez/pandoc-sidenote
+
+library
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Wmissing-signatures -Werror -funbox-strict-fields
+  build-depends:
+      base >=4.7 && <5
+    , mtl
+    , pandoc
+    , pandoc-types
+  exposed-modules:
+      Text.Pandoc.SideNote
+  other-modules:
+      Paths_pandoc_sidenote
+  default-language: Haskell2010
+
+executable pandoc-sidenote
+  main-is: Main.hs
+  hs-source-dirs:
+      app
+  ghc-options: -Wall -Wcompat -Wmissing-signatures -Werror -funbox-strict-fields
+  build-depends:
+      base >=4.7 && <5
+    , mtl
+    , pandoc
+    , pandoc-sidenote
+    , pandoc-types
+  other-modules:
+      Paths_pandoc_sidenote
+  default-language: Haskell2010
