@@ -20,7 +20,7 @@ applications such as Hakyll.
 
 | pandoc | pandoc-sidenote |
 | ------ | --------------- |
-| 1.19   | 0.19.0          |
+| 2.x, 1.19   | 0.19.0          |
 | 1.18   | 0.9.0           |
 
 If a newer version of `pandoc` has been released, the Stack build manifest
@@ -28,12 +28,23 @@ will need to be adjusted for that version, and the project then rebuilt.
 
 ## Installation
 
+### Cabal
+
+`pandoc-sidenote` is on Hackage and can thus be installed using `cabal`:
+```bash
+cabal install pandoc-sidenote
+```
+
+### Homebrew
+
 If you're on OS X, you can install the `pandoc-sidenote` binary from my Homebrew
 tap:
 
-```
+```bash
 brew install jez/formulae/pandoc-sidenote
 ```
+
+### From Source
 
 Otherwise, you'll have to install from source. This project is written in
 Haskell and built using [Stack]. If you're new to Haskell, now's a perfect time
