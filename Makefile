@@ -1,4 +1,4 @@
-VERSION := 0.19.0
+VERSION := 0.20.0
 
 all: pandoc-sidenote-$(VERSION).zip
 
@@ -7,8 +7,6 @@ stack:
 	stack build
 
 pandoc-sidenote-%.zip: stack
-	cd .stack-work/dist/x86_64-osx/Cabal-1.24.0.0/build/ && \
-	zip -r pandoc-sidenote pandoc-sidenote && \
-	cd ../../../../../ && \
-	mv .stack-work/dist/x86_64-osx/Cabal-1.24.0.0/build/pandoc-sidenote.zip $@
+	find .stack-work/install -name pandoc-sidenote -type f \
+	     -exec zip -j pandoc-sidenote.zip '{}' ';'
 
