@@ -20,6 +20,7 @@ applications such as Hakyll.
 
 | pandoc    | pandoc-sidenote |
 | ------    | --------------- |
+| 2.9       | 0.20.0          |
 | 2.1, 1.19 | 0.19.0          |
 | 1.18      | 0.9.0           |
 
