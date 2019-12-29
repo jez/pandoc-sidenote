@@ -26,9 +26,8 @@ ghc-options:
 dependencies:
 - base >= 4.7 && < 5
 - mtl
-- pandoc
-- pandoc-types
-
+- pandoc-types >= 1.20
+- text
 
 library:
   source-dirs: src

@@ -1,11 +1,13 @@
--- This file has been generated from package.yaml by hpack version 0.20.0.
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.2.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: fe713c44d9f1515c01cb722aa43283ab5c839adaae15444a0249fc7ac4402ec3
+-- hash: c6a31ecb31c271c2d06018cbb86b934912434626381e9a61ea909a838aaa6963
 
 name:           pandoc-sidenote
-version:        0.19.0.0
+version:        0.20.0.0
 synopsis:       Convert Pandoc Markdown-style footnotes into sidenotes
 description:    Convert Pandoc Markdown-style footnotes into sidenotes
 category:       CommandLine
@@ -17,11 +19,9 @@ copyright:      2016 Jake Zimmerman
 license:        MIT
 license-file:   LICENSE
 build-type:     Simple
-cabal-version:  >= 1.10
-
 extra-source-files:
-    LICENSE
     README.md
+    LICENSE
 
 source-repository head
   type: git
@@ -34,8 +34,8 @@ library
   build-depends:
       base >=4.7 && <5
     , mtl
-    , pandoc
-    , pandoc-types
+    , pandoc-types >=1.20
+    , text
   exposed-modules:
       Text.Pandoc.SideNote
   other-modules:
@@ -45,14 +45,14 @@ library
 executable pandoc-sidenote
   main-is: Main.hs
   hs-source-dirs:
-      app
-  ghc-options: -Wall -Wcompat -Wmissing-signatures -Werror -funbox-strict-fields
+      ./
+  ghc-options: -Wall -Wcompat -Wmissing-signatures -Werror -funbox-strict-fields -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
     , mtl
-    , pandoc
     , pandoc-sidenote
-    , pandoc-types
+    , pandoc-types >=1.20
+    , text
   other-modules:
       Paths_pandoc_sidenote
   default-language: Haskell2010

@@ -2,4 +2,6 @@ flags: {}
 extra-package-dbs: []
 packages:
 - '.'
-resolver: lts-11.2
+extra-deps:
+- pandoc-types-1.20
+resolver: lts-14.17

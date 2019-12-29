@@ -1,15 +1,17 @@
 {-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module Text.Pandoc.SideNote (usingSideNotes) where
 
 import           Data.List           (intercalate)
+import           Data.Text           (Text, append, pack)
 
 import           Control.Monad.State
 
 import           Text.Pandoc.JSON
 import           Text.Pandoc.Walk    (walk, walkM)
 
-getFirstStr :: [Inline] -> Maybe String
+getFirstStr :: [Inline] -> Maybe Text
 getFirstStr []                 = Nothing
 getFirstStr (Str text:_      ) = Just text
 getFirstStr (_       :inlines) = getFirstStr inlines
@@ -56,23 +58,26 @@ filterInline (Note blocks) = do
   let nonu     = getFirstStr content == Just "{-}"
   let content' = if nonu then tail content else content
 
-  let labelCls = "margin-toggle" ++ (if nonu then "" else " sidenote-number")
+  let labelCls = "margin-toggle" `append`
+                 (if nonu then "" else " sidenote-number")
   let labelSym = if nonu then "&#8853;" else ""
-  let labelHTML =
-        "<label for=\"sn-"
-          ++ show i
-          ++ "\" class=\""
-          ++ labelCls
-          ++ "\">"
-          ++ labelSym
-          ++ "</label>"
+  let labelHTML = mconcat
+         [ "<label for=\"sn-"
+         , pack (show i)
+         , "\" class=\""
+         , labelCls
+         , "\">"
+         , labelSym
+         , "</label>"
+         ]
   let label = RawInline (Format "html") labelHTML
 
-  let inputHTML =
-        "<input type=\"checkbox\" id=\"sn-"
-          ++ show i
-          ++ "\" "
-          ++ "class=\"margin-toggle\"/>"
+  let inputHTML = mconcat
+        [ "<input type=\"checkbox\" id=\"sn-"
+        , pack (show i)
+        , "\" "
+        , "class=\"margin-toggle\"/>"
+        ]
   let input             = RawInline (Format "html") inputHTML
 
   let (ident, _, attrs) = nullAttr
