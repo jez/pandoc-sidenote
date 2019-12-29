@@ -8,5 +8,5 @@ stack:
 
 pandoc-sidenote-%.zip: stack
 	find .stack-work/install -name pandoc-sidenote -type f \
-	     -exec zip -j pandoc-sidenote.zip '{}' ';'
+	     -exec zip -j $@ '{}' ';'
 
