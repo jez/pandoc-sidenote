@@ -5,12 +5,12 @@
 
 packages:
 - completed:
-    hackage: pandoc-types-1.20@sha256:8393b1a73b8a6a1f3feaeb3a6592c176461082c3e4d897f1b316b1a58dd84c39,3999
+    hackage: pandoc-types-1.22@sha256:15512ce011555ee720820f11cac0598317293406da5812337cbb1550d144e3bd,4071
     pantry-tree:
-      size: 855
-      sha256: cdaa66d381a21406434e7a733c9b9291a3bc44b623e7a9f97ef335283770f3fa
+      size: 737
+      sha256: 28e43150f4bb0d4d880cf92ade20fefcd8705ee95cfe4a1d0bb5efd320982a9d
   original:
-    hackage: pandoc-types-1.20
+    hackage: pandoc-types-1.22
 snapshots:
 - completed:
     size: 524799
