@@ -20,6 +20,7 @@ applications such as Hakyll.
 
 | pandoc    | pandoc-sidenote |
 | ------    | --------------- |
+| 2.11      | 0.21.0          |
 | 2.9       | 0.20.0          |
 | 2.1, 1.19 | 0.19.0          |
 | 1.18      | 0.9.0           |
@@ -45,6 +46,16 @@ tap:
 ```bash
 brew install jez/formulae/pandoc-sidenote
 ```
+
+Side note: I run this command to generate the zip files attached to releases
+that are downloaded by the Homebrew formula:
+
+```
+make
+```
+
+It would be nice to get GitHub Actions set up to build and publish releases
+for each tagged commit automatically.
 
 ### From Source
 
