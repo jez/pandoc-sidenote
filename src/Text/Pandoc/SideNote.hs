@@ -84,7 +84,7 @@ filterInline (Note blocks) = do
   let noteTypeCls       = if nonu then "marginnote" else "sidenote"
   let note              = Span (ident, [noteTypeCls], attrs) content'
 
-  return $ Span nullAttr [label, input, note]
+  return $ Span ("", ["sidenote-wrapper"], []) [label, input, note]
 
 filterInline inline = return inline
 
