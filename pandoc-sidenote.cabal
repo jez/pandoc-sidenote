@@ -1,13 +1,13 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.34.2.
+-- This file has been generated from package.yaml by hpack version 0.31.2.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 3dc31e4d4cc6384a653e426677ff091055a8f6bdac1d57281aa427335f388871
+-- hash: 20789b43ba42900f5d81902a9ed9073f6591ad0e551a0977acb6c7d5ab49b7f5
 
 name:           pandoc-sidenote
-version:        0.22.0.0
+version:        0.22.1.0
 synopsis:       Convert Pandoc Markdown-style footnotes into sidenotes
 description:    Convert Pandoc Markdown-style footnotes into sidenotes
 category:       CommandLine
@@ -28,6 +28,10 @@ source-repository head
   location: https://github.com/jez/pandoc-sidenote
 
 library
+  exposed-modules:
+      Text.Pandoc.SideNote
+  other-modules:
+      Paths_pandoc_sidenote
   hs-source-dirs:
       src
   ghc-options: -Wall -Wcompat -Wmissing-signatures -Werror -funbox-strict-fields
@@ -36,14 +40,12 @@ library
     , mtl
     , pandoc-types >=1.22
     , text
-  exposed-modules:
-      Text.Pandoc.SideNote
-  other-modules:
-      Paths_pandoc_sidenote
   default-language: Haskell2010
 
 executable pandoc-sidenote
   main-is: Main.hs
+  other-modules:
+      Paths_pandoc_sidenote
   hs-source-dirs:
       ./
   ghc-options: -Wall -Wcompat -Wmissing-signatures -Werror -funbox-strict-fields -threaded -rtsopts -with-rtsopts=-N
@@ -53,6 +55,4 @@ executable pandoc-sidenote
     , pandoc-sidenote
     , pandoc-types >=1.22
     , text
-  other-modules:
-      Paths_pandoc_sidenote
   default-language: Haskell2010
