@@ -47,16 +47,6 @@ tap:
 brew install jez/formulae/pandoc-sidenote
 ```
 
-Side note: I run this command to generate the zip files attached to releases
-that are downloaded by the Homebrew formula:
-
-```
-make
-```
-
-It would be nice to get GitHub Actions set up to build and publish releases
-for each tagged commit automatically.
-
 ### From Source
 
 Otherwise, you'll have to install from source. This project is written in
@@ -74,6 +64,25 @@ stack build
 # copy the compiled binary onto your PATH
 stack install
 ```
+
+## Notes to myself
+
+Side note: I run this command to generate the zip files attached to releases
+that are downloaded by the Homebrew formula:
+
+```bash
+make
+```
+
+It would be nice to get GitHub Actions set up to build and publish releases
+for each tagged commit automatically.
+
+I run this command to publish packages to Hackage:
+
+```bash
+stack upload .
+```
+
 
 ## License
 
