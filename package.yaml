@@ -13,7 +13,10 @@ extra-source-files:
 
 # Metadata used when publishing your package
 synopsis:            Convert Pandoc Markdown-style footnotes into sidenotes
-description:         Convert Pandoc Markdown-style footnotes into sidenotes
+description: >
+  This is a simple Pandoc filter to convert footnotes into a format that can be
+  consumed by Tufte CSS. On the whole, this project weighs in at well under 100
+  lines of code. Check out SideNote.hs if you're curious how it works.
 category:            CommandLine
 
 ghc-options:
