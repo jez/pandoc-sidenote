@@ -80,6 +80,8 @@ for each tagged commit automatically.
 I run this command to publish packages to Hackage:
 
 ```bash
+# First, edit `package.yaml` to remove `-Werror`, then:
+
 stack upload .
 ```
 
