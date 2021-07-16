@@ -4,17 +4,30 @@
 module Text.Pandoc.SideNote (usingSideNotes) where
 
 import           Data.List           (intercalate)
-import           Data.Text           (Text, append, pack)
+import           Data.Text           (append, pack)
 
 import           Control.Monad.State
 
 import           Text.Pandoc.JSON
 import           Text.Pandoc.Walk    (walk, walkM)
 
-getFirstStr :: [Inline] -> Maybe Text
-getFirstStr []                 = Nothing
-getFirstStr (Str text:_      ) = Just text
-getFirstStr (_       :inlines) = getFirstStr inlines
+data NoteType
+  = SideNote
+  | MarginNote
+  | FootNote
+  deriving (Show, Eq)
+
+getFirstStr :: [Block] -> (NoteType, [Block])
+getFirstStr blocks@(block:blocks') =
+  case block of
+    Plain ((Str "{-}"):Space:rest) -> (MarginNote, (Plain rest):blocks')
+    Plain ((Str "{.}"):Space:rest) -> (FootNote, (Plain rest):blocks')
+    Para ((Str "{-}"):Space:rest) -> (MarginNote, (Para rest):blocks')
+    Para ((Str "{.}"):Space:rest) -> (FootNote, (Para rest):blocks')
+    LineBlock (((Str "{-}"):Space:rest):rest') -> (MarginNote, (LineBlock (rest:rest')):blocks')
+    LineBlock (((Str "{.}"):Space:rest):rest') -> (FootNote, (LineBlock (rest:rest')):blocks')
+    _ -> (SideNote, blocks)
+getFirstStr blocks = (SideNote, blocks)
 
 newline :: [Inline]
 newline = [LineBreak, LineBreak]
@@ -26,7 +39,7 @@ getThenIncr = do
   put (i + 1)
   return i
 
--- Extract inlines from blocks
+-- Extract inlines from blocks. Note has a [Block], but Span needs [Inline].
 coerceToInline :: [Block] -> [Inline]
 coerceToInline = concatMap deBlock . walk deNote
  where
@@ -46,17 +59,10 @@ coerceToInline = concatMap deBlock . walk deNote
   deNote (Note _) = Str ""
   deNote x        = x
 
-filterInline :: Inline -> State Int Inline
-filterInline (Note blocks) = do
+filterNote :: Bool -> [Inline] -> State Int Inline
+filterNote nonu content = do
   -- Generate a unique number for the 'for=' attribute
   i <- getThenIncr
-
-  -- Note has a [Block], but Span needs [Inline]
-  let content  = coerceToInline blocks
-
-  -- The '{-}' symbol differentiates between margin note and side note
-  let nonu     = getFirstStr content == Just "{-}"
-  let content' = if nonu then tail content else content
 
   let labelCls = "margin-toggle" `append`
                  (if nonu then "" else " sidenote-number")
@@ -82,9 +88,18 @@ filterInline (Note blocks) = do
 
   let (ident, _, attrs) = nullAttr
   let noteTypeCls       = if nonu then "marginnote" else "sidenote"
-  let note              = Span (ident, [noteTypeCls], attrs) content'
+  let note              = Span (ident, [noteTypeCls], attrs) content
 
   return $ Span ("", ["sidenote-wrapper"], []) [label, input, note]
+
+filterInline :: Inline -> State Int Inline
+filterInline (Note blocks) = do
+  -- The '{-}' symbol differentiates between margin note and side note
+  -- Also '{.}' indicates whether to leave the footnote untouched (a footnote)
+  case (getFirstStr blocks) of
+    (FootNote, blocks') -> return (Note blocks')
+    (MarginNote, blocks') -> filterNote True (coerceToInline blocks')
+    (SideNote, blocks') -> filterNote False (coerceToInline blocks')
 
 filterInline inline = return inline
 
