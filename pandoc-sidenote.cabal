@@ -4,10 +4,10 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 03a56a16153c9ee7723afa1a73c1eae16387f6d7485d845f6874e02ca84c988b
+-- hash: 268bccd59212aa005d10ec7ee42a12ac5f701616470b039a8994d6b58cf09ba2
 
 name:           pandoc-sidenote
-version:        0.22.1.0
+version:        0.22.2.0
 synopsis:       Convert Pandoc Markdown-style footnotes into sidenotes
 description:    This is a simple Pandoc filter to convert footnotes into a format that can be consumed by Tufte CSS. On the whole, this project weighs in at well under 100 lines of code. Check out SideNote.hs if you're curious how it works.
 category:       CommandLine
