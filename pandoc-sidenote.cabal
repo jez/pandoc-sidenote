@@ -30,6 +30,7 @@ source-repository head
 library
   exposed-modules:
       Text.Pandoc.SideNote
+      Text.Pandoc.SideNoteHTML
   other-modules:
       Paths_pandoc_sidenote
   hs-source-dirs:
@@ -38,6 +39,7 @@ library
   build-depends:
       base >=4.7 && <5
     , mtl
+    , pandoc
     , pandoc-types >=1.22
     , text
   default-language: Haskell2010
@@ -52,6 +54,7 @@ executable pandoc-sidenote
   build-depends:
       base >=4.7 && <5
     , mtl
+    , pandoc
     , pandoc-sidenote
     , pandoc-types >=1.22
     , text
