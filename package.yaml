@@ -7,6 +7,12 @@ author:              Jake Zimmerman
 maintainer:          zimmerman.jake@gmail.com
 copyright:           2016 Jake Zimmerman
 
+flags:
+  html-sidenotes:
+    description: Enable HTML sidenotes
+    default:     False
+    manual:      True
+
 extra-source-files:
 - README.md
 - LICENSE
@@ -29,12 +35,16 @@ ghc-options:
 dependencies:
 - base >= 4.7 && < 5
 - mtl
-- pandoc
 - pandoc-types >= 1.22
 - text
 
 library:
   source-dirs: src
+  exposed-modules: Text.Pandoc.SideNote
+  when:
+    - condition: flag(html-sidenotes)
+      dependencies: pandoc
+      exposed-modules: Text.Pandoc.SideNoteHTML
 
 executables:
   pandoc-sidenote:
