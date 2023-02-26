@@ -59,8 +59,14 @@ type Sidenote = State SidenoteState
 --
 usingSideNotesHTML :: WriterOptions -> Pandoc -> Pandoc
 usingSideNotesHTML writer (Pandoc meta blocks) =
-  Pandoc meta (walkBlocks (SNS writer 0) blocks)
+  -- Drop a superfluous paragraph at the start of the document.
+  Pandoc meta . someStart . walkBlocks (SNS writer 0) $ blocks
  where
+  someStart :: [Block] -> [Block]
+  someStart = \case
+    (Para [Str ""] : bs) -> bs
+    bs                   -> bs
+
   walkBlocks :: SidenoteState -> [Block] -> [Block]
   walkBlocks sns = \case
     []       -> []
