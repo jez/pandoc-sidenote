@@ -3,5 +3,5 @@ extra-package-dbs: []
 packages:
 - '.'
 extra-deps:
-- pandoc-types-1.22
+- pandoc-types-1.23
 resolver: lts-18.0
