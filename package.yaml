@@ -1,5 +1,5 @@
 name:                pandoc-sidenote
-version:             0.22.3.0
+version:             0.23.0.0
 github:              jez/pandoc-sidenote
 license:             MIT
 license-file:        LICENSE
