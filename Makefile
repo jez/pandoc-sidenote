@@ -7,7 +7,7 @@ stack:
 	stack build
 
 pandoc-sidenote-%.zip: stack
-	find .stack-work/install -name pandoc-sidenote -type f \
+	find .stack-work/install/x86_64-osx -name pandoc-sidenote -type f \
 	     -exec zip -j $@ '{}' ';'
 
 # Assumes that a tag has already been created and pushed
