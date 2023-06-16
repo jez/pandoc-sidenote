@@ -85,6 +85,7 @@ mkSidenote = foldM (\acc b -> (acc <>) <$> single b) []
     -- in case two consecutive paragraphs have sidenotes, or a paragraph
     -- doesn't have one at all.
     Para inlines         -> (Para [Str ""] :) <$> renderSidenote [] inlines
+    Plain inlines        -> renderSidenote [] inlines
     OrderedList attrs bs -> (:[]) . OrderedList attrs <$> traverse mkSidenote bs
     BulletList        bs -> (:[]) . BulletList        <$> traverse mkSidenote bs
     block                -> pure [block]
