@@ -94,8 +94,13 @@ renderSidenote :: [Inline] -> [Inline] -> Sidenote [Block]
 renderSidenote !inlines = \case
   []           -> pure [plain inlines]
   Note bs : xs -> do block <- go bs
-                     mappend [plain (commentStart : inlines), block]
-                         <$> renderSidenote [] xs
+                     mappend [ -- Start gluing before, see [Note Comment].
+                               plain (RawInline "html" commentStart : inlines)
+                             , block
+                             ]
+                         <$> renderSidenote
+                               [RawInline "html" commentEnd] -- End gluing after
+                               xs
   b       : xs -> renderSidenote (b : inlines) xs
  where
   go :: [Block] -> Sidenote Block
@@ -103,8 +108,9 @@ renderSidenote !inlines = \case
     SNS w i <- get <* modify' (\sns -> sns{ counter = 1 + counter sns })
     let (typ, noteText) = getNoteType (render w blocks)
     pure . RawBlock "html" $
-      mconcat [ commentEnd     -- See [Note Comment]
+      mconcat [ commentEnd     -- End gluing before
               , label typ i <> input i <> note typ noteText
+              , commentStart   -- Start gluing after
               ]
 
   -- The '{-}' symbol differentiates between margin note and side note.
@@ -121,8 +127,8 @@ renderSidenote !inlines = \case
   commentEnd :: T.Text
   commentEnd   = "-->"
 
-  commentStart :: Inline
-  commentStart = RawInline "html" "<!--"
+  commentStart :: T.Text
+  commentStart = "<!--"
 
   plain :: [Inline] -> Block
   plain = Plain . reverse
@@ -146,9 +152,9 @@ note nt body = "<div class=\"" <> T.toLower (tshow nt) <> "\">" <> body <> "</di
 {- [Note Comment]
 
 This is obviously horrible, but we have to do this in order for the
-block (which is now not an inline element anymore!) immediately before
-the sidenote to be "glued" to the sidenote itself.  In this way, the
-number indicating the sidenote does not have an extra space associated
-to it, which it otherwise would have.
+blocks (which are now not inline elements anymore!) immediately before
+and after the sidenote to be "glued" to the sidenote itself. In this
+way, the number indicating the sidenote does not have an extra space
+associated to it on either side, which otherwise would be the case.
 
 -}
