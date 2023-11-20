@@ -3,16 +3,27 @@
 > Convert Pandoc Markdown-style footnotes into sidenotes
 
 This is a simple [Pandoc filter] to convert footnotes into a format that can be
-consumed by [Tufte CSS] and [Pandoc Markdown CSS Theme]. On the whole, this
-project weighs in at well under 100 lines of code. Check out
-[SideNote.hs](src/Text/Pandoc/SideNote.hs) if you're curious how it works.
+consumed by [Tufte CSS] and [Pandoc Markdown CSS Theme].
 
-It's used by calling `pandoc --filter pandoc-sidenote`. To see it in action, see
-[Tufte Pandoc CSS], a project which uses it. In particular, take a look at the
-Makefile included in that project.
+As a command line utility, the project may be used by calling `pandoc --filter
+pandoc-sidenote`. To see it in action, see [Tufte Pandoc CSS], a project which
+uses it. In particular, take a look at the Makefile included in that project.
 
-The core functionality is also exposed as a library, which can be called by Haskell
-applications such as Hakyll.
+Further, the core functionality is also exposed as a library, which can be
+called by Haskell applications such as [Hakyll]. It comes in two different
+flavours:
+
+  - [SideNote.hs](src/Text/Pandoc/SideNote.hs): An implementation making use of
+    pandoc's native `Span` constructors. This is what's used in the
+    `pandoc-sidenote` executable.
+
+  - [SideNoteHTML.hs](src/Text/Pandoc/SideNoteHTML.hs): An
+    implementation that converts the footnote directly into HTML,
+    enabling the embedding of arbitrary blocks inside of side and
+    marginnotes.
+
+On the whole, each file weighs in at just about 100 lines of code—check them out
+if you're curious how they work.
 
 ## Dependencies
 
@@ -98,3 +109,4 @@ stack upload .
 [Pandoc filter]: http://pandoc.org/scripting.html#json-filters
 [Tufte Pandoc CSS]: https://github.com/jez/tufte-pandoc-css
 [Pandoc Markdown CSS Theme]: https://github.com/jez/pandoc-markdown-css-theme
+[Hakyll]: https://jaspervdj.be/hakyll/
