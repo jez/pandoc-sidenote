@@ -14,14 +14,15 @@
 -}
 module Text.Pandoc.SideNoteHTML (usingSideNotesHTML) where
 
-import Control.Monad.State (State, foldM, get, modify', runState)
+import Control.Monad (foldM)
+import Control.Monad.State (State, get, modify', runState)
 import Data.Text (Text)
-import qualified Data.Text as T
 import Text.Pandoc (runPure, writeHtml5String)
 import Text.Pandoc.Definition (Block (..), Inline (..), Pandoc (..))
 import Text.Pandoc.Options (WriterOptions)
 import Text.Pandoc.Shared (tshow)
 import Text.Pandoc.Walk (walkM)
+import qualified Data.Text as T
 
 -- type NoteType :: Type
 data NoteType = Sidenote | Marginnote
