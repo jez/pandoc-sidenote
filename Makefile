@@ -14,3 +14,10 @@ pandoc-sidenote-%.zip: stack
 .PHONY: release
 release: pandoc-sidenote-$(VERSION).zip
 	hub release create -a $< $(VERSION)
+
+PANDOC_FILTERS := $${XDG_DATA_DIR:-$$HOME/.local/share}/pandoc/filters
+
+.PHONY: install-lua
+install-lua:
+	mkdir -p "$(PANDOC_FILTERS)" && \
+		cp -v pandoc-sidenote.lua "$(PANDOC_FILTERS)"

@@ -113,7 +113,7 @@ local function makeNoteMarkup(noteKind, content)
 
   local labelSym
   if noteKind == 'marginnote' then
-    labelSym = '\u{2295}'
+    labelSym = '&#8853;'
   else
     labelSym = ''
   end
