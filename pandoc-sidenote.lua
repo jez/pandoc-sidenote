@@ -113,13 +113,9 @@ local function accumulateInlines(inlines, block)
   -- Think they shouldn't be? I'm open to sensible PR's.
 end
 
-local function walkBlocks(blocks, filter)
-  return pandoc.Div(blocks):walk(filter).content
-end
-
 -- Extract inlines from blocks. Note has Blocks, but Span needs Inlines
 local function coerceToInline(blocks)
-  blocks = walkBlocks(blocks, {
+  blocks = blocks:walk({
     Note = function(note)
       return pandoc.Str("")
     end,
