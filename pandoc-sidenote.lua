@@ -135,11 +135,7 @@ local function coerceToInline(blocks)
   return inlines
 end
 
-local snIdx = -1
-local function makeNoteMarkup(noteKind, content)
-  -- Generate a unique number for the `for=` attribute
-  snIdx = snIdx + 1
-
+local function makeLabel(snIdx, noteKind)
   local labelCls = 'margin-toggle'
   if noteKind == 'sidenote' then
     labelCls = labelCls .. ' sidenote-number'
@@ -154,7 +150,15 @@ local function makeNoteMarkup(noteKind, content)
 
   local labelFormatStr = '<label for="sn-%d" class="%s">%s</label>'
   local labelHTML = labelFormatStr:format(snIdx, labelCls, labelSym)
-  local label = pandoc.RawInline('html', labelHTML)
+  return pandoc.RawInline('html', labelHTML)
+end
+
+local snIdx = -1
+local function makeNoteMarkup(noteKind, content)
+  -- Generate a unique number for the `for=` attribute
+  snIdx = snIdx + 1
+
+  local label = makeLabel(snIdx, noteKind)
 
   local inputFormatStr = '<input type="checkbox" id="sn-%d" class="margin-toggle"/>'
   local inputHTML = inputFormatStr:format(snIdx)
