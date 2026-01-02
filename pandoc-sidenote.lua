@@ -155,19 +155,18 @@ end
 
 local snIdx = -1
 function Note(note)
-  local noteKind = mungeBlocks(note.content)
-  if noteKind == "footnote" then
-    return note
-  end
+        local noteKind = mungeBlocks(note.content)
+        if noteKind == "footnote" then
+          return note
+        end
 
-  -- Generate a unique number for the `for=` attribute
-  snIdx = snIdx + 1
+        -- Generate a unique number for the `for=` attribute
+        snIdx = snIdx + 1
 
-  local inlines = coerceToInline(note.content)
-
-  return pandoc.Span({
-    makeLabel(snIdx, noteKind),
-    pandoc.RawInline("html", makeInputHTML(snIdx)),
-    pandoc.Span(inlines, { class = noteKind }),
-  }, { class = "sidenote-wrapper" })
+          local inlines = coerceToInline(note.content)
+          return pandoc.Span({
+            makeLabel(snIdx, noteKind),
+            pandoc.RawInline("html", makeInputHTML(snIdx)),
+            pandoc.Span(inlines, { class = noteKind }),
+          }, { class = "sidenote-wrapper" })
 end
