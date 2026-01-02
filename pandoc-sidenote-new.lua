@@ -127,7 +127,6 @@ local function makeBlockWalker()
 end
 
 function Blocks(blocks)
-  print(blocks)
   local result = {}
 
   for i = 1, #blocks do
