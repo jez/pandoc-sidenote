@@ -152,11 +152,7 @@ local function makeLabel(snIdx, noteKind)
   return pandoc.RawInline("html", labelHTML)
 end
 
-local snIdx = -1
-local function makeNoteMarkup(noteKind, content)
-  -- Generate a unique number for the `for=` attribute
-  snIdx = snIdx + 1
-
+local function makeNoteMarkup(snIdx, noteKind, content)
   local label = makeLabel(snIdx, noteKind)
 
   local inputFormatStr = '<input type="checkbox" id="sn-%d" class="margin-toggle"/>'
@@ -167,12 +163,16 @@ local function makeNoteMarkup(noteKind, content)
   return pandoc.Span({ label, input, note }, { class = "sidenote-wrapper" })
 end
 
+local snIdx = -1
 function Note(note)
   local noteKind = mungeBlocks(note.content)
   if noteKind == "footnote" then
     return note
   end
 
+  -- Generate a unique number for the `for=` attribute
+  snIdx = snIdx + 1
+
   local inlines = coerceToInline(note.content)
-  return makeNoteMarkup(noteKind, inlines)
+  return makeNoteMarkup(snIdx, noteKind, inlines)
 end
