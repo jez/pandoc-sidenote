@@ -30,6 +30,7 @@ local function stripNoteAttribute(inlines)
 
     -- '{^-}' indicates that it should be a margin note, but using the
     -- hoisted block markup, instead of remaining inline.
+    -- TODO(jez) Also implement sidenote-block
     if inlines[1].text == "{^-}" then
       inlines:remove(1)
       inlines:remove(1)
@@ -75,7 +76,7 @@ local function makeLabel(snIdx, noteKind)
   end
 
   local labelSym
-  if noteKind == "marginnote" then
+  if noteKind == "marginnote" or noteKind == "marginnote-block" then
     labelSym = "&#8853;"
   else
     labelSym = ""
@@ -86,11 +87,9 @@ local function makeLabel(snIdx, noteKind)
   return pandoc.RawInline("html", labelHTML)
 end
 
--- TODO(jez) Will need to make either RawInline or RawBlock
-local function makeInput(snIdx)
+local function makeInputHTML(snIdx)
   local inputFormatStr = '<input type="checkbox" id="sn-%d" class="margin-toggle"/>'
-  local inputHTML = inputFormatStr:format(snIdx)
-  return pandoc.RawBlock("html", inputHTML)
+  return inputFormatStr:format(snIdx)
 end
 
 local snIdx = -1
@@ -100,6 +99,8 @@ local function makeBlockWalker()
   local notes = {}
   return {
     notes = notes,
+    -- Just to be explicit, because there are two different walks in play.
+    traverse = "typewise",
     filter = {
       Note = function(note)
         local noteKind = mungeBlocks(note.content)
@@ -110,9 +111,13 @@ local function makeBlockWalker()
         -- Generate a unique number for the `for=` attribute
         snIdx = snIdx + 1
 
-        -- TODO(jez) sidenote and marginnote
         if noteKind ~= "marginnote-block" then
-          return note
+          local inlines = coerceToInline(note.content)
+          return pandoc.Span({
+            makeLabel(snIdx, noteKind),
+            pandoc.RawInline("html", makeInputHTML(snIdx)),
+            pandoc.Span(inlines, { class = noteKind }),
+          }, { class = "sidenote-wrapper" })
         end
 
         notes[#notes + 1] = {
@@ -125,6 +130,8 @@ local function makeBlockWalker()
     },
   }
 end
+
+traverse = "topdown"
 
 function Blocks(blocks)
   local result = {}
@@ -144,7 +151,7 @@ function Blocks(blocks)
       end
       result[#result + 1] = pandoc.Div(
         pandoc.Blocks({
-          makeInput(note.snIdx),
+          pandoc.RawBlock("html", makeInputHTML(note.snIdx)),
           pandoc.Div(note.content, { class = contentClass }),
         }),
         { class = "sidenote-wrapper" }
@@ -153,5 +160,6 @@ function Blocks(blocks)
     result[#result + 1] = newBlock
   end
 
-  return pandoc.Blocks(result)
+  local shouldRecurse = false
+  return pandoc.Blocks(result), shouldRecurse
 end
