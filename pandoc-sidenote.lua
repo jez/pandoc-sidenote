@@ -158,14 +158,6 @@ local function makeInput(snIdx)
   return pandoc.RawInline("html", inputHTML)
 end
 
-local function makeNoteMarkup(snIdx, noteKind, content)
-  local label = makeLabel(snIdx, noteKind)
-  local input = makeInput(snIdx)
-
-  local note = pandoc.Span(content, { class = noteKind })
-  return pandoc.Span({ label, input, note }, { class = "sidenote-wrapper" })
-end
-
 local snIdx = -1
 function Note(note)
   local noteKind = mungeBlocks(note.content)
@@ -177,5 +169,10 @@ function Note(note)
   snIdx = snIdx + 1
 
   local inlines = coerceToInline(note.content)
-  return makeNoteMarkup(snIdx, noteKind, inlines)
+
+  return pandoc.Span({
+    makeLabel(snIdx, noteKind),
+    makeInput(snIdx),
+    pandoc.Span(inlines, { class = noteKind }),
+  }, { class = "sidenote-wrapper" })
 end
