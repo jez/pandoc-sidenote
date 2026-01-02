@@ -51,7 +51,16 @@ local function stripNoteAttribute(inlines)
       return "marginnote"
     end
 
-    -- Also '{.}' indicates whether to leave the footnote untouched (a footnote)
+    -- '{^-}' indicates that it should be a margin note, but using the
+    -- hoisted block markup, instead of remaining inline.
+    -- TODO(jez) Also implement sidenote-block
+    if inlines[1].text == "{^-}" then
+      inlines:remove(1)
+      inlines:remove(1)
+      return "marginnote-block"
+    end
+
+    -- '{.}' indicates whether to leave the footnote untouched (a footnote)
     if inlines[1].text == "{.}" then
       inlines:remove(1)
       inlines:remove(1)
@@ -137,7 +146,7 @@ local function makeLabel(snIdx, noteKind)
   end
 
   local labelSym
-  if noteKind == "marginnote" then
+  if noteKind == "marginnote" or noteKind == "marginnote-block" then
     labelSym = "&#8853;"
   else
     labelSym = ""
@@ -154,7 +163,16 @@ local function makeInputHTML(snIdx)
 end
 
 local snIdx = -1
-function Note(note)
+
+-- TODO(jez) Can you make this use whatever OOP features Lua has?
+local function makeBlockWalker()
+  local notes = {}
+  return {
+    notes = notes,
+    -- Just to be explicit, because there are two different walks in play.
+    traverse = "typewise",
+    filter = {
+      Note = function(note)
         local noteKind = mungeBlocks(note.content)
         if noteKind == "footnote" then
           return note
@@ -163,10 +181,69 @@ function Note(note)
         -- Generate a unique number for the `for=` attribute
         snIdx = snIdx + 1
 
+        if noteKind ~= "marginnote-block" then
           local inlines = coerceToInline(note.content)
           return pandoc.Span({
             makeLabel(snIdx, noteKind),
             pandoc.RawInline("html", makeInputHTML(snIdx)),
             pandoc.Span(inlines, { class = noteKind }),
           }, { class = "sidenote-wrapper" })
+        end
+
+        notes[#notes + 1] = {
+          snIdx = snIdx,
+          kind = noteKind,
+          content = note.content,
+        }
+        return makeLabel(snIdx, noteKind)
+      end,
+    },
+  }
+end
+
+traverse = "topdown"
+
+-- TODO(jez) Handle footnotes inside Note itself.
+--
+-- Actually, it looks like pandoc markdown doesn't parse recursive footnotes.
+-- The AST doesn't seem to preclude building them, so maybe other readers or
+-- other filters could produce such ASTs. Going to punt for now though.
+
+function Blocks(blocks)
+  local result = {}
+
+  for i = 1, #blocks do
+    local block = blocks[i]
+    local blockWalker = makeBlockWalker()
+
+    -- Handles non-block sidenotes/marginnotes, and collects the block ones
+    local newBlock = block:walk(blockWalker.filter)
+
+    -- Hoist block sidenotes/marginnotes ahead of their containing block
+    for j = 1, #blockWalker.notes do
+      local note = blockWalker.notes[j]
+
+      local contentClass = note.kind
+      if contentClass == "marginnote-block" then
+        -- Use .marginnote class for backwards compatibility.
+        -- If people really want to care about the distinction,
+        -- they can write `div.marginnote` or `span.marginnote`
+        contentClass = "marginnote"
+      end
+
+      result[#result + 1] = pandoc.Div(
+        pandoc.Blocks({
+          pandoc.RawBlock("html", makeInputHTML(note.snIdx)),
+          pandoc.Div(note.content, { class = contentClass }),
+        }),
+        { class = "sidenote-wrapper" }
+      )
+    end
+
+    -- Reinsert the (transformed) block
+    result[#result + 1] = newBlock
+  end
+
+  local shouldRecurse = false
+  return pandoc.Blocks(result), shouldRecurse
 end
