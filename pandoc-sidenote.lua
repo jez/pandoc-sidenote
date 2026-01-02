@@ -148,10 +148,9 @@ local function makeLabel(snIdx, noteKind)
   return pandoc.RawInline("html", labelHTML)
 end
 
-local function makeInput(snIdx)
+local function makeInputHTML(snIdx)
   local inputFormatStr = '<input type="checkbox" id="sn-%d" class="margin-toggle"/>'
-  local inputHTML = inputFormatStr:format(snIdx)
-  return pandoc.RawInline("html", inputHTML)
+  return inputFormatStr:format(snIdx)
 end
 
 local snIdx = -1
@@ -168,7 +167,7 @@ function Note(note)
 
   return pandoc.Span({
     makeLabel(snIdx, noteKind),
-    makeInput(snIdx),
+    pandoc.RawInline("html", makeInputHTML(snIdx)),
     pandoc.Span(inlines, { class = noteKind }),
   }, { class = "sidenote-wrapper" })
 end
