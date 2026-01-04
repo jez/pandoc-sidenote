@@ -31,23 +31,28 @@
 -- SOFTWARE.
 --------------------------------------------------------------------------------
 
-local function startsWithStrSpace(inlines)
+local function startsWithStrSpace(inlines, canOmitSpace)
   if not inlines[1] or inlines[1].tag ~= "Str" then
     return false
   end
-  if not inlines[2] or inlines[2].tag ~= "Space" then
+  if not inlines[2] then
+    return canOmitSpace
+  end
+  if inlines[2].tag ~= "Space" then
     return false
   end
 
   return true
 end
 
-local function stripNoteAttribute(inlines)
-  if startsWithStrSpace(inlines) then
+local function stripNoteAttribute(inlines, canOmitSpace)
+  if startsWithStrSpace(inlines, canOmitSpace) then
     -- The '{-}' symbol differentiates between margin note and side note
     if inlines[1].text == "{-}" then
       inlines:remove(1)
-      inlines:remove(1)
+      if inlines[1] and inlines[1].tag == 'Space' then
+        inlines:remove(1)
+      end
       return "marginnote"
     end
 
@@ -56,14 +61,18 @@ local function stripNoteAttribute(inlines)
     -- TODO(jez) Also implement sidenote-block
     if inlines[1].text == "{^-}" then
       inlines:remove(1)
-      inlines:remove(1)
+      if inlines[1] and inlines[1].tag == 'Space' then
+        inlines:remove(1)
+      end
       return "marginnote-block"
     end
 
     -- '{.}' indicates whether to leave the footnote untouched (a footnote)
     if inlines[1].text == "{.}" then
       inlines:remove(1)
-      inlines:remove(1)
+      if inlines[1] and inlines[1].tag == 'Space' then
+        inlines:remove(1)
+      end
       return "footnote"
     end
   end
@@ -79,11 +88,11 @@ local function mungeBlocks(blocks)
   local block = blocks[1]
 
   if block.tag == "Plain" or block.tag == "Para" then
-    return stripNoteAttribute(block.content)
+    return stripNoteAttribute(block.content, #blocks > 1)
   elseif block.tag == "LineBlock" then
     local firstInlines = block.content[1]
     if firstInlines then
-      return stripNoteAttribute(firstInlines)
+      return stripNoteAttribute(firstInlines, #block.content > 1 or #blocks > 1)
     end
 
     return "sidenote"
