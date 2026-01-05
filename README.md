@@ -151,6 +151,70 @@ stack build
 stack install
 ```
 
+## Features
+
+-   By default, all markdown foot notes will be converted into numbered side notes.
+
+    ```
+    This will be a side note.[^1]
+
+    [^1]: Example side note text.
+    ```
+
+-   To get a margin note (which has no number), make the footnote text start
+    with `{-}`. This is akin to the `# Heading {-}` syntax that [Pandoc
+    supports](https://pandoc.org/MANUAL.html#extension-header_attributes) for
+    eliding numbers in documents that would otherwise have numbered headings.
+
+    ```
+    This will be a margin note.[^2] It will not have numbers
+
+    [^2]: {-} Example margin note text.
+    ```
+
+-   To leave a footnote untouched so that it remains in the document as a normal
+    footnote, prefix the text with `{.}`.
+
+    ```
+    This text will remain a footnote.[^3]
+
+    [^3]: {.} Example footnote text.
+    ```
+
+    Be careful mixing side notes with footnotes in the same document, because
+    they will be numbered independently. Documents that make heavy use of
+    footnotes may want to use margin notes (`{-}`) instead of side notes.
+
+-   By default, side notes and margin notes cannot contain block elements, like
+    code blocks, lists, or tables. If they do, they are silently dropped.
+
+    To avoid having block elements dropped, use `{^}` or `{^-}` for block-based
+    side notes and margin notes, respectively.
+
+    ```
+    This side note[^4] and this margin note[^5] can contain block elements.
+
+    [^4]:
+        {^} There are block elements in this side note:
+
+        - Hello, world!
+
+    [^5]:
+        {^} There are block elements in this margin note:
+
+        ```python
+        print("Hello, world!")
+        ```
+    ```
+
+    **Note**: these two features produce an HTML structure that is currently
+    only supported by [Pandoc Markdown CSS Theme]. Notably, Tufte CSS does not
+    support this structure yet.
+
+    **Note**: these two features are only supported by the Lua filter, not the
+    JSON filter.
+
+
 ## Haskell Library
 
 The core functionality is also exposed as a Haskell library, which can be called
